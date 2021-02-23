@@ -272,6 +272,8 @@ const changePwd = async (req, res, next) => {
 const listUsers = async (req, res) => {
   const { name, email, cpf, contact } = req.query;
 
+  //lista de usuarios
+
   const condition = {};
 
   if (name != undefined) {
