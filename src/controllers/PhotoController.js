@@ -26,8 +26,8 @@ const create = async (req, res, next) => {
       key: key,
       url:
         process.env.STORAGE_TYPE === "local"
-          ? `http://localhost:3001/files/${key}`
-          : `https://podobucket.s3.us-east-2.amazonaws.com/${key}`,
+          ? `${process.env.APP_URL}/${key}`
+          : `${process.env.S3_URL}/${key}`,
       createdBy: req.user,
     });
     return res.status(201).json(photo);
@@ -42,7 +42,6 @@ const create = async (req, res, next) => {
 
 const delete_photo = async (req, res, next) => {
   const { id } = req.params;
-
   try {
     const photo = await Photo.findById(id);
     photo.updatedBy = req.user;

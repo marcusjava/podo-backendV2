@@ -27,8 +27,6 @@ const handleValidationError = (error, resp) => {
   let errors = Object.values(error.errors).map((el) => el.message);
   let fields = Object.values(error.errors).map((el) => el.path);
 
-  console.log(errors);
-
   resp.status(code).send({ path: fields[0], message: errors[0] });
 };
 

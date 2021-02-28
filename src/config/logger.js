@@ -23,7 +23,7 @@ const logger = winston.createLogger({
     new winston.transports.Console({
       format: formatter,
       handleExceptions: true,
-      json: false,
+      json: true,
       colorize: true,
     }),
     new winston.transports.File({

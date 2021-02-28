@@ -70,8 +70,8 @@ const ClientSchema = new mongoose.Schema(
 
 ClientSchema.virtual("avatar_url").get(function () {
   return process.env.STORAGE_TYPE == "s3"
-    ? `https://podobucket.s3.us-east-2.amazonaws.com/${this.avatar}`
-    : `http://localhost:3001/files/${this.avatar}`;
+    ? `${process.env.S3_URL}/${this.avatar}`
+    : `${process.env.APP_URL}/${this.avatar}`;
 });
 
 ClientSchema.virtual("consults", {

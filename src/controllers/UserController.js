@@ -38,8 +38,8 @@ const login = async (req, res, next) => {
           role: user.role,
           avatar_url:
             process.env.STORAGE_TYPE == "local"
-              ? `http://localhost:3001/files/${user.thumbnail}`
-              : `https://podobucket.s3.us-east-2.amazonaws.com/${user.thumbnail}`,
+              ? `${process.env.APP_URL}/${user.thumbnail}`
+              : `${process.env.S3_URL}/${user.thumbnail}`,
         };
 
         jwt.sign(
@@ -272,7 +272,7 @@ const changePwd = async (req, res, next) => {
 const listUsers = async (req, res) => {
   const { name, email, cpf, contact } = req.query;
 
-  //lista de usuarios
+  //lista de usuariosya
 
   const condition = {};
 

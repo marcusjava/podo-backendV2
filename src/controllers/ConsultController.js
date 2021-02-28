@@ -2,6 +2,7 @@ const Consult = require("../models/Consult");
 const Client = require("../models/Client");
 const ConsultHistory = require("../models/ConsultHistory");
 const ValidateConsult = require("../validation/consult");
+const ObjectToString = require("../utils/ObjectToString");
 
 const create = async (req, res, next) => {
   const { errors, isValid } = ValidateConsult(req.body);
@@ -191,30 +192,10 @@ const generateDoc = async (req, res, next) => {
       })),
       anamnese: {
         ...anamnese,
-        unhas_formato: Object.entries(anamnese.unhas_formato).map(
-          ([key, value]) => ({
-            key,
-            value: Array.isArray(value) ? value.join(",") : value,
-          })
-        ),
-        orto_lesoes: Object.entries(anamnese.orto_lesoes).map(
-          ([key, value]) => ({
-            key,
-            value: Array.isArray(value) ? value.join(",") : value,
-          })
-        ),
-        pele_lesoes: Object.entries(anamnese.pele_lesoes).map(
-          ([key, value]) => ({
-            key,
-            value: Array.isArray(value) ? value.join(",") : value,
-          })
-        ),
-        unhas_lesoes: Object.entries(anamnese.unhas_lesoes).map(
-          ([key, value]) => ({
-            key,
-            value: Array.isArray(value) ? value.join(",") : value,
-          })
-        ),
+        unhas_formato: ObjectToString(anamnese.unhas_formato),
+        orto_lesoes: ObjectToString(anamnese.orto_lesoes),
+        pele_lesoes: ObjectToString(anamnese.pele_lesoes),
+        unhas_lesoes: ObjectToString(anamnese.unhas_lesoes),
       },
       price,
       type_consult,

@@ -60,8 +60,8 @@ const UserSchema = mongoose.Schema(
 
 UserSchema.virtual("avatar_url").get(function () {
   return process.env.STORAGE_TYPE == "local"
-    ? `http://localhost:3001/files/${this.thumbnail}`
-    : `https://podobucket.s3.us-east-2.amazonaws.com/${this.thumbnail}`;
+    ? `${process.env.APP_URL}/${this.thumbnail}`
+    : `${process.env.S3_URL}/${this.thumbnail}`;
 });
 
 UserSchema.plugin(mongooseHistory);

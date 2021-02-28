@@ -7,7 +7,7 @@ const LogToSentry = require("../utils/LogSentry");
 const ErrorController = (error, req, res, next) => {
   // set locals, only providing error in development
 
-  // LogToSentry(error, req);
+  LogToSentry(error, req);
   if (error.name === "ValidationError") {
     return (err = handleValidationError(error, res));
   }

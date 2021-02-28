@@ -20,11 +20,16 @@ const photos = require("./routes/api/photos");
 const ErrorController = require("./controllers/ErrorController");
 
 // URI mongodb atlas mongodb+srv://omnistack:omnistack@cluster0-kjbyd.mongodb.net/semana09?retryWrites=true&w=majority
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+mongoose.connect(
+  process.env.NODE_ENV === "production"
+    ? process.env.MONGO_URI_PROD
+    : process.env.MONGO_URI_DEV,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  }
+);
 //mongoose.set('debug', true);
 
 const app = express();
@@ -66,12 +71,12 @@ app.use(
   serveIndex(path.resolve(__dirname, "..", "logs"), { icons: true })
 );
 
-//if (process.env.NODE_ENV === 'production') {
-//	app.use(express.static(path.resolve(__dirname, '..', 'build')));
-//	app.get('/app', (req, res) => {
-//		res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
-//	});
-//}
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "..", "build")));
+  app.get("/app", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+  });
+}
 
 //Handle errors to log
 app.use(ErrorController);
