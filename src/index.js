@@ -71,10 +71,6 @@ app.use(
   serveIndex(path.resolve(__dirname, "..", "logs"), { icons: true })
 );
 
-app.use("/", (req, res) => {
-  return res.send("Server running!!!!");
-});
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "..", "client", "build")));
   app.get("/app", (req, res) => {
@@ -88,6 +84,10 @@ if (process.env.NODE_ENV === "production") {
 app.use(ErrorController);
 
 // process.on uncaught and unhandled exceptions
+
+app.use("/", (req, res) => {
+  return res.send("Server running!!!!");
+});
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server started at port 3001`);
