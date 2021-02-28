@@ -71,6 +71,10 @@ app.use(
   serveIndex(path.resolve(__dirname, "..", "logs"), { icons: true })
 );
 
+app.use("/", (req, res) => {
+  return res.send("Server running!!!!");
+});
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "..", "build")));
   app.get("/app", (req, res) => {
