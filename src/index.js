@@ -54,7 +54,7 @@ app.use(
 
 // Routes
 
-app.use("/", (req, res) => {
+app.use("/api", (req, res) => {
   return res.send("Server running!!!!");
 });
 
