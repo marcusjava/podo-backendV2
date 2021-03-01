@@ -54,6 +54,10 @@ app.use(
 
 // Routes
 
+app.use("/", (req, res) => {
+  return res.send("Server running!!!!");
+});
+
 app.use("/api/users", users);
 app.use("/api/clients", clients);
 app.use("/api/procedures", procedures);
@@ -84,10 +88,6 @@ if (process.env.NODE_ENV === "production") {
 app.use(ErrorController);
 
 // process.on uncaught and unhandled exceptions
-
-app.use("/", (req, res) => {
-  return res.send("Server running!!!!");
-});
 
 app.listen(process.env.PORT || 3001, () => {
   console.log(`Server started at port 3001`);
