@@ -17,3 +17,5 @@
 {"message":"01-03-2021T13:23 - 400 - Internal Error - [object Object]  - /api/users/login - POST - ::ffff:127.0.0.1","level":"error"}
 {"message":"01-03-2021T14:02 - 400 - Internal Error - [object Object]  - /api/users/login - POST - ::ffff:127.0.0.1","level":"error"}
 {"message":"01-03-2021T21:55 - 400 - Internal Error - [object Object]  - /api/users/login - POST - ::ffff:127.0.0.1","level":"error"}
+{"message":"02-03-2021T21:05 - 400 - Internal Error - [object Object]  - /api/clients/register - POST - ::ffff:127.0.0.1","level":"error"}
+{"message":"02-03-2021T21:08 - 400 - Internal Error - [object Object]  - /api/clients/register - POST - ::ffff:127.0.0.1","level":"error"}

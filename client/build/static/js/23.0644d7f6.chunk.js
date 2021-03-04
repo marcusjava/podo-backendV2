@@ -1,2 +1,0 @@
-(this["webpackJsonpfront-antd"]=this["webpackJsonpfront-antd"]||[]).push([[23],{625:function(n,t,e){"use strict";e.r(t);var a=e(0),r=e.n(a);t.default=function(){return r.a.createElement("div",null,r.a.createElement("h4",null,"Logs"))}}}]);
-//# sourceMappingURL=23.0644d7f6.chunk.js.map
