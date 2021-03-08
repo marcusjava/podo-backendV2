@@ -3,6 +3,7 @@ const Client = require("../models/Client");
 const ConsultHistory = require("../models/ConsultHistory");
 const ValidateConsult = require("../validation/consult");
 const ObjectToString = require("../utils/ObjectToString");
+const dayjs = require("dayjs");
 
 const create = async (req, res, next) => {
   const { errors, isValid } = ValidateConsult(req.body);
@@ -247,4 +248,47 @@ const log = async (req, res, next) => {
     });
 };
 
-module.exports = { create, update, retrieve, list, log, generateDoc };
+const getStats = async (req, res, next) => {
+  const { startDate, endDate, status = "Realizada" } = req.query;
+  //...(includeB && { b: 2 } )
+
+  Consult.aggregate([
+    {
+      $match: {
+        date: { $gte: new Date(startDate), $lte: new Date(endDate) },
+        status,
+      },
+    },
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%d-%m-%Y", date: "$date" },
+        },
+        status: { $first: "$status" },
+        count: { $sum: 1 },
+      },
+    },
+  ])
+    .exec()
+    .then((consults) => {
+      return res.send(consults);
+    })
+    .catch((error) =>
+      next({
+        status: 500,
+        message: {
+          path: "error",
+          message: "Erro ao recuperar as consultas",
+        },
+      })
+    );
+};
+
+/* {
+  _id: { 
+    $dateToString: { format: "%d-%m-%Y", date: "$date" } 
+  },
+  count: {$sum:1}
+} */
+
+module.exports = { create, update, retrieve, list, log, generateDoc, getStats };

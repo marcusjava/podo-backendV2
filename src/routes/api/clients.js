@@ -38,6 +38,15 @@ routes.get(
 );
 
 // @route GET api/clients
+// @desc GET Clients
+// @access Private
+routes.get(
+  "/stats/clients",
+  passport.authenticate("jwt", { session: false }),
+  ClientController.getStats
+);
+
+// @route GET api/clients
 // @desc GET Client by ID
 // @access Private
 routes.get(

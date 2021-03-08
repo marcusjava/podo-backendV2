@@ -157,4 +157,38 @@ const list = async (req, res) => {
   return res.json(list);
 };
 
-module.exports = { create, update, list, retrieve };
+const getStats = async (req, res, next) => {
+  const { startDate, endDate } = req.query;
+  //...(includeB && { b: 2 } )
+
+  Client.aggregate([
+    {
+      $match: {
+        createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          $dateToString: { format: "%d-%m-%Y", date: "$createdAt" },
+        },
+        count: { $sum: 1 },
+      },
+    },
+  ])
+    .exec()
+    .then((clients) => {
+      return res.send(clients);
+    })
+    .catch((error) =>
+      next({
+        status: 500,
+        message: {
+          path: "error",
+          message: "Erro ao consultar os clientes",
+        },
+      })
+    );
+};
+
+module.exports = { create, update, list, retrieve, getStats };
