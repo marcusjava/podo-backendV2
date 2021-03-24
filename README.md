@@ -1,0 +1,68 @@
+<h1 align="center">Clinica Nana Podologia ⚕️ </h1>
+
+<p>
+  <img alt="Login" src="https://podobucketv2.s3-sa-east-1.amazonaws.com/tela_login.png" />
+  
+</p>
+<p>
+  <img alt="Login" src="https://podobucketv2.s3-sa-east-1.amazonaws.com/dashboard.png" />
+  
+</p>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="#" target="_blank">
+    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
+  </a>
+</p>
+
+> Controle de Atendimentos Clinica Podologia
+
+### 🏠 [Homepage](https://nanapodologia.herokuapp.com)
+
+### ✨ [Demo](https://nanapodologia.herokuapp.com)
+
+## 1 - Instalação
+
+```sh
+yarn install
+```
+
+## 2 - Configurar variaveis de ambiente
+
+MONGO_URI_DEV - String de conexão do mongoDB no modo dev Ex. mongodb://localhost/nomedobanco
+MONGO_URI_PROD - String de conexão do mongoDB na nuvem no modo produção(Mongo Atlas) Ex. mongodb+srv://user:pwd@cluster0.6q3ha.mongodb.net/nome_banco?retryWrites=true&w=majority
+MONGO_USER - Usuario do banco
+MONGO_PWD - senha do banco
+
+SECRET_KEY - Chave secreta para o token JWT
+
+APP_URL - URL da aplicação
+S3_URL - URL do Amazon S3 para o upload das fotos
+
+STORAGE_TYPE = s3 ou local
+
+SENTRY_DSN - Ver <a href="https://sentry.io/welcome/" target="_blank">Sentry</a>
+
+AWS_ACCESS_KEY_ID - Ver <a href="https://aws.amazon.com/" target="_blank">AWS Amazon</a>
+AWS_SECRET_ACCESS_KEY - Ver <a href="https://aws.amazon.com/" target="_blank">AWS Amazon</a>
+AWS_DEFAULT_REGION - <a href="https://aws.amazon.com/" target="_blank">AWS Amazon</a>
+
+## 3 - Executar projeto
+
+```sh
+yarn dev
+```
+
+## Autor
+
+👤 **Marcus Vinicius**
+
+- Github: [@marcusjava](https://github.com/marcusjava)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+---
+
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
