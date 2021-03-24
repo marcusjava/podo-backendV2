@@ -19,8 +19,6 @@
 
 ### 🏠 [Homepage](https://nanapodologia.herokuapp.com)
 
-### ✨ [Demo](https://nanapodologia.herokuapp.com)
-
 ## 1 - Instalação
 
 ```sh
