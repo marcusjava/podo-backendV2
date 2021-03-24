@@ -1,15 +1,24 @@
 const Procedure = require("../models/Procedure");
+const Dedos = require("../utils/DedosJSON");
 
 const ValidateProcedure = require("../validation/procedure");
 
 const create = async (req, res, next) => {
   const { errors, isValid } = ValidateProcedure(req.body);
+  let procedures = [];
 
   if (!isValid) {
     return next({ status: 400, message: errors });
   }
 
   const { service, name, price, description } = req.body;
+
+  procedures = Dedos.map((item) => ({
+    service,
+    name: `${name} em ${item}`,
+    price,
+    description,
+  }));
 
   const procedure = await Procedure.findOne({ name });
 
@@ -20,18 +29,9 @@ const create = async (req, res, next) => {
     });
   }
 
-  try {
-    const newProcedure = await Procedure.create({
-      service,
-      name,
-      price,
-      description,
-      createdBy: req.user,
-    });
-    return res.status(201).json(newProcedure);
-  } catch (error) {
-    return next(error);
-  }
+  Procedure.insertMany(procedures)
+    .then(() => res.status(201).json(procedures))
+    .catch((error) => next(error));
 };
 
 const update = async (req, res, next) => {
