@@ -30,7 +30,7 @@ const create = async (req, res, next) => {
   }
 
   Procedure.insertMany(procedures)
-    .then(() => res.status(201).json(procedures))
+    .then((items) => res.status(201).json(items))
     .catch((error) => next(error));
 };
 
