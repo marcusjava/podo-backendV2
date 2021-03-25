@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-const mongooseHistory = require("mongoose-history");
-const uniqueValidator = require("mongoose-unique-validator");
 const beautifyUnique = require("mongoose-beautiful-unique-validation");
 
 const UserSchema = mongoose.Schema(
@@ -63,8 +61,6 @@ UserSchema.virtual("avatar_url").get(function () {
     ? `${process.env.APP_URL}/${this.thumbnail}`
     : `${process.env.S3_URL}/${this.thumbnail}`;
 });
-
-UserSchema.plugin(mongooseHistory);
 
 UserSchema.plugin(beautifyUnique);
 
