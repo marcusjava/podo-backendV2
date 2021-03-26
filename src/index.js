@@ -17,6 +17,7 @@ const procedures = require("./routes/api/procedures");
 const services = require("./routes/api/services");
 const consults = require("./routes/api/consults");
 const photos = require("./routes/api/photos");
+const pdf = require("./routes/api/pdf");
 const ErrorController = require("./controllers/ErrorController");
 
 // URI mongodb atlas mongodb+srv://omnistack:omnistack@cluster0-kjbyd.mongodb.net/semana09?retryWrites=true&w=majority
@@ -60,6 +61,7 @@ app.use("/api/procedures", procedures);
 app.use("/api/services", services);
 app.use("/api/consults", consults);
 app.use("/api/photos", photos);
+app.use("/api/pdf", pdf);
 
 //fazendo com que as imagens fiquem acessiveis
 app.use("/files", express.static(path.resolve(__dirname, "..", "uploads")));

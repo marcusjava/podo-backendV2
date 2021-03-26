@@ -4,6 +4,11 @@ const ConsultHistory = require("../models/ConsultHistory");
 const ValidateConsult = require("../validation/consult");
 const ObjectToString = require("../utils/ObjectToString");
 const dayjs = require("dayjs");
+const path = require("path");
+const pdf = require("html-pdf");
+const puppeteer = require("puppeteer");
+const ejs = require("ejs");
+const { getList } = require("../services/consult");
 
 const create = async (req, res, next) => {
   const { errors, isValid } = ValidateConsult(req.body);
@@ -120,35 +125,9 @@ const retrieve = async (req, res, next) => {
 
 const list = async (req, res, next) => {
   const { start, end, status, client, client_id, all, limit = 200 } = req.query;
-
-  let condition = {};
-  let clients;
-
-  if (!all) {
-    condition.date = {
-      $gte: new Date(new Date().setHours(00, 00, 00)),
-    };
-  }
-
-  if (start !== undefined && end !== undefined) {
-    condition.date = {
-      $gte: new Date(new Date(start).setHours(00, 00, 00)),
-      $lte: new Date(new Date(end).setHours(23, 59, 59)),
-    };
-  }
-
-  if (client !== undefined) {
-    clients = await Client.find({ name: { $regex: client, $options: "i" } });
-    condition.client = { $in: clients };
-  }
-  if (client_id !== undefined) {
-    condition.client = { _id: client_id };
-  }
-
-  Consult.find(condition)
-    .sort({ date: 1 })
-    .limit(limit)
-    .exec((error, consults) => {
+  getList(
+    { start, end, status, client, client_id, all, limit },
+    (error, consults) => {
       if (error) {
         return next({
           status: 400,
@@ -161,7 +140,8 @@ const list = async (req, res, next) => {
       }
 
       return res.json(consults);
-    });
+    }
+  );
 };
 
 const generateDoc = async (req, res, next) => {
@@ -284,6 +264,34 @@ const getStats = async (req, res, next) => {
     );
 };
 
+const getConsultsHTML = async (req, res) => {
+  const { start, end, status, client, client_id, all, limit = 200 } = req.query;
+  getList(
+    { start, end, status, client, client_id, all, limit },
+    (error, consults) => {
+      if (error) {
+        return next({
+          status: 400,
+          message: {
+            path: "error",
+            message: "Sem resultados",
+          },
+          originalError: error,
+        });
+      }
+
+      const file = path.join(__dirname, "..", "ejs", "consult", "consults.ejs");
+      ejs.renderFile(file, { consults, dayjs }, (err, html) => {
+        if (err) {
+          console.log("error", err);
+          return res.send("Ocorreu um erro ao gerar relatorio");
+        }
+        res.send(html);
+      });
+    }
+  );
+};
+
 /* {
   _id: { 
     $dateToString: { format: "%d-%m-%Y", date: "$date" } 
@@ -291,4 +299,13 @@ const getStats = async (req, res, next) => {
   count: {$sum:1}
 } */
 
-module.exports = { create, update, retrieve, list, log, generateDoc, getStats };
+module.exports = {
+  create,
+  update,
+  retrieve,
+  list,
+  log,
+  generateDoc,
+  getStats,
+  getConsultsHTML,
+};
