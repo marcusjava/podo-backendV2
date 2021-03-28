@@ -8,7 +8,7 @@ const path = require("path");
 const pdf = require("html-pdf");
 const puppeteer = require("puppeteer");
 const ejs = require("ejs");
-const { getList } = require("../services/consult");
+const { getList, getDoc } = require("../services/consult");
 
 const create = async (req, res, next) => {
   const { errors, isValid } = ValidateConsult(req.body);
@@ -147,51 +147,18 @@ const list = async (req, res, next) => {
 const generateDoc = async (req, res, next) => {
   const { id } = req.params;
 
-  try {
-    const {
-      _id,
-      date,
-      client: { avatar, address, name, cpf, contact },
-      procedures,
-      anamnese,
-      price,
-      type_consult,
-      updatedAt,
-    } = await Consult.findById(id);
-
-    const doc = {
-      _id,
-      date,
-      avatar,
-      name,
-      cpf,
-      contact,
-      address,
-      procedures: procedures.map((item) => ({
-        name: item.name,
-        price: item.price,
-      })),
-      anamnese: {
-        ...anamnese,
-        unhas_formato: ObjectToString(anamnese.unhas_formato),
-        orto_lesoes: ObjectToString(anamnese.orto_lesoes),
-        pele_lesoes: ObjectToString(anamnese.pele_lesoes),
-        unhas_lesoes: ObjectToString(anamnese.unhas_lesoes),
-      },
-      price,
-      type_consult,
-      updatedAt,
-    };
+  getDoc(id, (err, doc) => {
+    if (err) {
+      return next({
+        status: 500,
+        message: {
+          path: "error",
+          message: "Ocorreu um erro ao gerar a ficha de consulta",
+        },
+      });
+    }
     return res.json(doc);
-  } catch (error) {
-    next({
-      status: 500,
-      message: {
-        path: "error",
-        message: "Ocorreu um erro ao gerar a ficha de consulta",
-      },
-    });
-  }
+  });
 };
 
 const log = async (req, res, next) => {
@@ -292,6 +259,30 @@ const getConsultsHTML = async (req, res) => {
   );
 };
 
+const generateDocHTML = async (req, res) => {
+  const { id } = req.params;
+
+  getDoc(id, (err, consult) => {
+    if (err) {
+      return next({
+        status: 500,
+        message: {
+          path: "error",
+          message: "Ocorreu um erro ao gerar a ficha de consulta",
+        },
+      });
+    }
+    const file = path.join(__dirname, "..", "ejs", "consult", "anamnese.ejs");
+    ejs.renderFile(file, { consult, dayjs }, (err, html) => {
+      if (err) {
+        console.log("error", err);
+        return res.send("Ocorreu um erro ao gerar relatorio");
+      }
+      res.send(html);
+    });
+  });
+};
+
 /* {
   _id: { 
     $dateToString: { format: "%d-%m-%Y", date: "$date" } 
@@ -308,4 +299,5 @@ module.exports = {
   generateDoc,
   getStats,
   getConsultsHTML,
+  generateDocHTML,
 };

@@ -4,6 +4,6 @@ const routes = Router();
 
 const PdfController = require("../../controllers/PdfController");
 
-routes.get("/consults", PdfController.getConsultsPDF);
+routes.get("/", PdfController.getPDF);
 
 module.exports = routes;

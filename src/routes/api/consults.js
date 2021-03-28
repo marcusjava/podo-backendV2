@@ -42,6 +42,14 @@ routes.get(
   //passport.authenticate("jwt", { session: false }),
   ConsultController.getConsultsHTML
 );
+// @route GET api/consults/:id
+// @desc GET Consult
+// @access Private
+routes.get(
+  "/reports/consults/:id",
+  //passport.authenticate("jwt", { session: false }),
+  ConsultController.generateDocHTML
+);
 
 // @route GET api/consults/:id/doc
 // @desc GET Consult generate Doc

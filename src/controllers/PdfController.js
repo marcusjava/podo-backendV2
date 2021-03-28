@@ -13,15 +13,13 @@ const options = {
   },
 };
 
-const getConsultsPDF = async (req, res) => {
-  const { url } = req.body;
+const getPDF = async (req, res) => {
+  const { url } = req.query;
 
-  console.log(url);
-
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
 
-  await page.goto("http://localhost:3001/api/consults/reports/consults", {
+  await page.goto(url, {
     waitUntil: "networkidle0",
   });
 
@@ -34,4 +32,4 @@ const getConsultsPDF = async (req, res) => {
   return res.send(pdf);
 };
 
-module.exports = { getConsultsPDF };
+module.exports = { getPDF };

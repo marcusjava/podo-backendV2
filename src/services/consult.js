@@ -1,4 +1,5 @@
 const Consult = require("../models/Consult");
+const Photo = require("../models/Photo");
 const ObjectToString = require("../utils/ObjectToString");
 const dayjs = require("dayjs");
 
@@ -44,4 +45,47 @@ const getList = async (params, callback) => {
     });
 };
 
-module.exports = { getList };
+const getDoc = async (id, callback) => {
+  try {
+    const {
+      _id,
+      date,
+      client: { avatar, address, name, cpf, contact },
+      procedures,
+      anamnese,
+      price,
+      type_consult,
+      updatedAt,
+    } = await Consult.findById(id);
+    const photos = await Photo.find({ owner: id, onModel: "Consult" });
+    const doc = {
+      _id,
+      date,
+      avatar,
+      name,
+      cpf,
+      contact,
+      address,
+      procedures: procedures.map((item) => ({
+        name: item.name,
+        price: item.price,
+      })),
+      anamnese: {
+        ...anamnese,
+        unhas_formato: ObjectToString(anamnese.unhas_formato),
+        orto_lesoes: ObjectToString(anamnese.orto_lesoes),
+        pele_lesoes: ObjectToString(anamnese.pele_lesoes),
+        unhas_lesoes: ObjectToString(anamnese.unhas_lesoes),
+      },
+      price,
+      type_consult,
+      updatedAt,
+      photos,
+    };
+    return callback(null, doc);
+  } catch (err) {
+    return callback(err, null);
+  }
+};
+
+module.exports = { getList, getDoc };
