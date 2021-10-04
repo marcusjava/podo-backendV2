@@ -21,16 +21,14 @@ const pdf = require("./routes/api/pdf");
 const ErrorController = require("./controllers/ErrorController");
 
 // URI mongodb atlas mongodb+srv://omnistack:omnistack@cluster0-kjbyd.mongodb.net/semana09?retryWrites=true&w=majority
-mongoose.connect(
-  process.env.NODE_ENV === "production"
+/* process.env.NODE_ENV === "production"
     ? process.env.MONGO_URI_PROD
-    : process.env.MONGO_URI_DEV,
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true,
-  }
-);
+    : process.env.MONGO_URI_DEV */
+mongoose.connect(process.env.MONGO_URI_PROD, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 //mongoose.set('debug', true);
 
 const app = express();
