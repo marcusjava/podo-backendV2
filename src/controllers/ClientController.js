@@ -3,7 +3,6 @@ const Consult = require("../models/Consult");
 const ValidateClient = require("../validation/client");
 
 const create = async (req, res, next) => {
-  console.log(req.file);
   const { errors, isValid } = ValidateClient(req.body);
 
   if (!isValid) {
@@ -23,7 +22,7 @@ const create = async (req, res, next) => {
     etnia,
   } = req.body;
   const newClient = new Client({
-    avatar: req.file === "undefined" ? "no-img.png" : req.file.key,
+    avatar: req.file === undefined ? "no-img.png" : req.file.key,
     name,
     instagram,
     cpf,
