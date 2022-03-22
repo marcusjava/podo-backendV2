@@ -16,8 +16,6 @@ const ClientSchema = new mongoose.Schema(
     },
     cpf: {
       type: String,
-      required: [true, "Campo obrigatorio"],
-      unique: "CPF já cadastrado!",
     },
     rg: { type: String, default: "" },
     email: {
